@@ -464,20 +464,21 @@
                     <a href="my-cv.pdf" download="Aniket_Gupta_CV" class="btn" style="margin-top: 1rem; width: 100%; text-align: center;">Download Resumé</a>
                 </div>
                 
-                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+               <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<script src="config.js"></script>
+
 <script type="text/javascript">
    (function(){
-      emailjs.init("auqHQtNvGx3VxpbFo"); 
+      // Initialize using the variable from config.js
+      emailjs.init(CONFIG.EMAILJS_PUBLIC_KEY); 
    })();
 </script>
 
 <form id="contactForm">
     <input type="text" name="name" placeholder="Your Name" required>
-    
     <input type="email" name="email" placeholder="Your Email" required>
-    
     <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-    
     <button type="submit" class="btn" id="submitBtn">Transmit Message</button>
 </form>
             </div>
@@ -685,26 +686,30 @@
         document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('active')));
         
         // Form
-       document.getElementById('contactForm').addEventListener('submit', function(e) {
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const submitBtn = document.getElementById('submitBtn');
     const originalText = submitBtn.innerText;
-    submitBtn.innerText = 'Transmitting...'; // Loading state
+    submitBtn.innerText = 'Transmitting...'; 
 
-    // Replace these with your actual IDs from the EmailJS dashboard
-    const serviceID = 'service_iay19ba';
-    const templateID = 'template_tt8u96k';
+    // Use the variables from config.js here
+    const serviceID = CONFIG.EMAILJS_SERVICE_ID;
+    const templateID = CONFIG.EMAILJS_TEMPLATE_ID;
 
     emailjs.sendForm(serviceID, templateID, this)
         .then(() => {
             submitBtn.innerText = 'Message Sent!';
-            submitBtn.style.background = '#00f2fe'; // Success color
+            submitBtn.style.background = '#00f2fe'; 
             this.reset();
             setTimeout(() => {
                 submitBtn.innerText = originalText;
-                submitBtn.style.background = ''; // Revert to gradient
+                submitBtn.style.background = ''; 
             }, 3000);
+        }, (err) => {
+            submitBtn.innerText = 'Transmission Failed';
+            console.log(JSON.stringify(err));
+            setTimeout(() => submitBtn.innerText = originalText, 3000);
         }, (err) => {
             submitBtn.innerText = 'Transmission Failed';
             console.log(JSON.stringify(err));
