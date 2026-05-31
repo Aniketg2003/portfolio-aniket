@@ -1,0 +1,7 @@
+
+# Ignore the real config file containing secrets
+config.js
+
+# OS generated files (optional but good practice)
+.DS_Store
+Thumbs.db
